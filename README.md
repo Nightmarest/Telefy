@@ -2,6 +2,8 @@
 
 Простой и быстрый скрипт для проецирования вашей музыкальной активности в Spotify.
 
+Большое спасибо [altfoxie](https://github.com/altfoxie) за идею.
+
 ![Screenshot](screen.png)
 
 ## Установка

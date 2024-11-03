@@ -22,7 +22,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                redirect_uri='https://burmlda.apicluster.ru/call',
                                                scope='user-read-playback-state'))
 def spotify_callback():
-    while True:
+
         current_track = sp.current_playback()
 
         if current_track is not None:
@@ -41,6 +41,7 @@ def spotify_callback():
             ListenNow['TT'] = (f'{duration_min}:{duration_sec:02d}')
             ListenNow['TN'] = (f'{progress_min}:{progress_sec:02d}')
             ListenNow['TA'] = album_art
+            ListenNow['State'] = current_track['is_playing']
 
             return ListenNow
         else:

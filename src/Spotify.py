@@ -19,7 +19,7 @@ time.sleep(float(RInterval))
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                client_secret=client_secret,
-                                               redirect_uri='https://burmlda.apicluster.ru/call',
+                                               redirect_uri='https://apicluster.ru/call',
                                                scope='user-read-playback-state'))
 def spotify_callback():
     try:

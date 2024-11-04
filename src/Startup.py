@@ -33,7 +33,11 @@ def Publish(ChannelID):
                     MID = Message.message_id
                     Pause = 0
                 else:
-                    bot.send_message(chat_id=ChannelID, text=f"{NotPlaying}")
+                    if Pause == 0 or Pause == 1:
+                        Pause = 2
+                        Message = bot.send_message(chat_id=ChannelID, text=f"{NotPlaying}")
+                        MID = Message.message_id
+
 
             else:
                 if Data is not None:
@@ -62,6 +66,12 @@ def Publish(ChannelID):
                             Message = bot.send_photo(chat_id=ChannelID, photo=Data['TA'], caption=Text)
                             MID = Message.message_id
                             Pause = 0
+                else:
+                    if Pause == 0 or Pause == 1:
+                        Pause = 2
+                        bot.delete_message(ChannelID, MID)
+                        Message = bot.send_message(chat_id=ChannelID, text=f"{NotPlaying}")
+                        MID = Message.message_id
 
             time.sleep(float(RInterval))
     except Exception as e:

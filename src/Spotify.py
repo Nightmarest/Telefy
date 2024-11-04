@@ -22,7 +22,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                redirect_uri='https://burmlda.apicluster.ru/call',
                                                scope='user-read-playback-state'))
 def spotify_callback():
-
+    try:
         current_track = sp.current_playback()
 
         if current_track is not None:
@@ -45,7 +45,8 @@ def spotify_callback():
 
             return ListenNow
         else:
-            print('Ничего не играет в данный момент.')
             return None
+    except Exception:
+        return None
 
 

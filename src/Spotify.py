@@ -16,12 +16,15 @@ client_id = cp['SP_AUTH']['CLIENT_ID']
 client_secret = cp['SP_AUTH']['CLIENT_SECRET']
 RInterval = cp['GENERAL']['RefreshInterval']
 time.sleep(float(RInterval))
+AT = None
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                client_secret=client_secret,
                                                redirect_uri='https://apicluster.ru/call',
                                                scope='user-read-playback-state'))
+
 def spotify_callback():
+    global AT
     try:
         current_track = sp.current_playback()
 
@@ -43,10 +46,17 @@ def spotify_callback():
             ListenNow['TA'] = album_art
             ListenNow['State'] = current_track['is_playing']
 
+            if AT != ListenNow['AT']:
+                AT = ListenNow['AT']
+                print(f"Сейчас играет: {ListenNow['AT']}")
+            else:
+                pass
             return ListenNow
         else:
             return None
-    except Exception:
+    except Exception as e:
+        print(f"Ошибка в получении данных - {e}")
+
         return None
 
 

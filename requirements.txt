@@ -1,0 +1,7 @@
+pystray~=0.19.5
+pillow~=11.0.0
+spotipy~=2.24.0
+requests~=2.32.3
+psutil~=6.1.0
+packaging~=24.1
+colorama~=0.4.6

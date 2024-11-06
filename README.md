@@ -1,8 +1,11 @@
-# Telefy
+![Screen](assets/Telefy.png)
+
 
 Простой и быстрый скрипт для отображения вашей музыкальной активности в Spotify.
 
-Большое спасибо [altfoxie](https://github.com/altfoxie) за идею [FozerG](https://github.com/FozerG/) за примерное представление как работает фоновый режим.
+Большое спасибо [altfoxie](https://github.com/altfoxie) за идею.
+
+[FozerG](https://github.com/FozerG/) за примерное представление как работает фоновый режим.
 
 ![Screenshot](assets/screen.png)
 

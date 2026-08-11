@@ -6,9 +6,10 @@ from spotipy.oauth2 import SpotifyOAuth
 import configparser
 
 from src import Helper
+from src.platform_utils import CONFIG_PATH
 
-config_file = 'config.ini'
-if not os.path.exists(config_file):
+config_file = str(CONFIG_PATH)
+if not CONFIG_PATH.exists():
     Helper.CreateConfig()
 cp = configparser.ConfigParser()
 cp.read(config_file)

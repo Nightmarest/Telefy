@@ -2,13 +2,19 @@ import configparser
 import os
 import sys
 
-import pystray
 import telebot
-import win32gui
 from PIL import Image, ImageDraw
 
+from src.platform_utils import ASSETS_DIR, CONFIG_PATH, IS_WINDOWS
 
-config_file = 'config.ini'
+if IS_WINDOWS:
+    import pystray
+    import win32gui
+else:
+    pystray = None  # type: ignore[assignment]
+    win32gui = None  # type: ignore[assignment]
+
+config_file = str(CONFIG_PATH)
 cp = configparser.ConfigParser()
 
 
@@ -43,9 +49,11 @@ def Get_IconPath():
         if getattr(sys, 'frozen', False):  # Запуск с помощью PyInstaller
             resources_path = sys._MEIPASS
         else:
-            resources_path = os.path.dirname(os.path.abspath(__file__))
+            resources_path = str(ASSETS_DIR)
 
-        return f"{resources_path}/assets/Telefy.ico"
+        if getattr(sys, 'frozen', False):
+            return os.path.join(resources_path, 'assets', 'Telefy.ico')
+        return os.path.join(resources_path, 'Telefy.ico')
     except Exception:
         return None
 

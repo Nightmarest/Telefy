@@ -6,26 +6,43 @@ import sys
 import threading
 import time
 import webbrowser
-import winreg
 from enum import Enum
+
+# Support both `python -m src.Startup` and `cd src && python Startup.py`.
+if __package__ in {None, ""}:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from packaging import version
-import pythoncom
 import requests
 from PIL import Image
 from colorama import init, Fore, Style
-import pystray
-import win32con
-import win32console
-import win32gui
-from win32com.client import Dispatch
 import psutil
 from src import Helper
 from src.Spotify import spotify_callback
 from src.Helper import bot, ChannelID, Get_IconPath, toggle_auto_start_windows
-from pystray import MenuItem as item
+from src.platform_utils import CONFIG_PATH, IS_WINDOWS
 
-config_file = 'config.ini'
-if not os.path.exists(config_file):
+if IS_WINDOWS:
+    import winreg
+    import pythoncom
+    import pystray
+    import win32con
+    import win32console
+    import win32gui
+    from win32com.client import Dispatch
+    from pystray import MenuItem as item
+else:
+    winreg = None  # type: ignore[assignment]
+    pythoncom = None  # type: ignore[assignment]
+    pystray = None  # type: ignore[assignment]
+    win32con = None  # type: ignore[assignment]
+    win32console = None  # type: ignore[assignment]
+    win32gui = None  # type: ignore[assignment]
+    Dispatch = None  # type: ignore[assignment]
+    item = None  # type: ignore[assignment]
+
+config_file = str(CONFIG_PATH)
+if not CONFIG_PATH.exists():
     Helper.CreateConfig()
 cp = configparser.ConfigParser()
 cp.read(config_file)
@@ -178,16 +195,20 @@ def Is_run_by_exe():
     else:
         return False
 def tray_click(icon, query):
-    match str(query):
-        case "GitHub":
-            webbrowser.open("https://github.com/Nightmarest/Telefy",  new=2)
-
-        case "Exit":
-            icon.stop()
-            win32gui.PostMessage(window, win32con.WM_CLOSE, 0, 0)
+    if not IS_WINDOWS:
+        return
+    action = str(query)
+    if action == "GitHub":
+        webbrowser.open("https://github.com/Nightmarest/Telefy",  new=2)
+    elif action == "Exit":
+        icon.stop()
+        win32gui.PostMessage(window, win32con.WM_CLOSE, 0, 0)
 
 
 def toggle_auto_start_windows():
+    if not IS_WINDOWS:
+        log("Автозапуск через реестр доступен только в Windows", LogType.Notification)
+        return
     global auto_start_windows
     auto_start_windows = not auto_start_windows
     log(f'Bool auto_start_windows set state: {auto_start_windows}')

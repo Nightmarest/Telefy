@@ -11,17 +11,26 @@
 
 ## Установка
 
-Основной рассчёт - на пользователей Windows. Файл .exe вы сможете найти в релизах. 
+Готовый `.exe` предназначен для Windows, а Python-версия работает в Windows, Linux и macOS.
 
 Однако, ничего не мешает вам запустить скрипт на чистом Python. 
 
 В каком-то смысле, это даже плюс - вы сможете дать возможность скрипту работать бесперебойно, установив подобный скрипт на сервер посредством Python.
 
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+pip install -r requirements.txt
+python3 -m src.Startup
 ```
-$ pip install -r requirements.txt
 
-$ python3 Startup.py
-```
+Запуск `python3 Startup.py` из каталога `src` также поддерживается. Настройки всегда
+читаются из `config.ini` в корне проекта. Другой путь можно задать переменной
+окружения `TELEFY_CONFIG`.
+
+Windows-модули (`winreg`, `pywin32` и системный tray) в Linux не загружаются.
+На сервере программа работает в консольном режиме; для фонового запуска удобно
+использовать `systemd`, `tmux` или Docker.
 
 ## Запуск
 

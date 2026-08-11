@@ -1,4 +1,6 @@
-pystray~=0.19.5
+pystray~=0.19.5; platform_system == "Windows"
+pywin32>=306; platform_system == "Windows"
+pyTelegramBotAPI>=4.20
 pillow~=11.0.0
 spotipy~=2.24.0
 requests~=2.32.3

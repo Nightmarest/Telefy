@@ -2,7 +2,6 @@ import configparser
 import os
 import sys
 
-import telebot
 from PIL import Image, ImageDraw
 
 from src.platform_utils import ASSETS_DIR, CONFIG_PATH, IS_WINDOWS
@@ -13,6 +12,7 @@ if IS_WINDOWS:
 else:
     pystray = None  # type: ignore[assignment]
     win32gui = None  # type: ignore[assignment]
+
 
 config_file = str(CONFIG_PATH)
 cp = configparser.ConfigParser()
@@ -28,10 +28,12 @@ def CreateConfig():
     cp['TG_CONF'] = {
         'BotToken': 'YourToken',
         'ChannelID': 'YourChannelID',
+        'OwnerID': 'YourTelegramUserID',
     }
     cp['GENERAL'] = {
         'NotPlaying': 'Oh no, where my music???',
         'RefreshInterval': '3',
+        'RenderMode': 'text',
     }
     with open(config_file, 'w') as f:
         cp.write(f)
@@ -60,7 +62,13 @@ def Get_IconPath():
 
 
 cp.read(config_file)
+if 'TG_CONF' in cp and 'OwnerID' not in cp['TG_CONF']:
+    cp['TG_CONF']['OwnerID'] = 'YourTelegramUserID'
+    with open(config_file, 'w') as f:
+        cp.write(f)
+if 'GENERAL' in cp and 'RenderMode' not in cp['GENERAL']:
+    cp['GENERAL']['RenderMode'] = 'text'
+    with open(config_file, 'w') as f:
+        cp.write(f)
 Token = cp['TG_CONF']['BotToken']
 ChannelID = cp['TG_CONF']['ChannelID']
-bot = telebot.TeleBot(Token, parse_mode='HTML')
-

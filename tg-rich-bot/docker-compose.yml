@@ -1,0 +1,14 @@
+services:
+  bot:
+    build: .
+    image: tg-rich-bot:latest
+    container_name: tg-rich-bot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      # persist mosaic cache so we don't re-upload sticker sets
+      - mosaic-cache:/app/.claude
+    # No ports — bot uses outbound long-polling, no inbound traffic.
+
+volumes:
+  mosaic-cache:

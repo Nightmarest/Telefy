@@ -1,3 +1,11 @@
 .idea
 .venv
 .ini
+config.ini
+.cache
+.cache-*
+.local/
+__pycache__/
+*.pyc
+.env
+.env.*

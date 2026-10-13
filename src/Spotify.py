@@ -6,6 +6,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import configparser
 
 from src import Helper
+from src.Website import playback_payload
 
 config_file = 'config.ini'
 if not os.path.exists(config_file):
@@ -45,6 +46,7 @@ def spotify_callback():
             ListenNow['TN'] = (f'{progress_min}:{progress_sec:02d}')
             ListenNow['TA'] = album_art
             ListenNow['State'] = current_track['is_playing']
+            ListenNow['NowPlaying'] = playback_payload(current_track)
 
             if AT != ListenNow['AT']:
                 AT = ListenNow['AT']
